@@ -6,11 +6,11 @@ use App\Model\UserModel;
 use Dero\Data\Factory;
 use Dero\Core\BaseController;
 /**
- * Blog controller
+ * Version controller
  * @author Ryan Pallas
- * @package SampleSite
+ * @package PennyAuction
  * @namespace App\Controller
- * @since 2014-02-27
+ * @since 2014-10-08
  */
 
 class VersionController extends BaseController

@@ -5,11 +5,11 @@ use Dero\Core\BaseController;
 use App\Model\UserModel;
 
 /**
- * Blog controller
+ * User controller
  * @author Ryan Pallas
- * @package SampleSite
+ * @package PennyAuction
  * @namespace App\Controller
- * @since 2014-02-27
+ * @since 2014-10-08
  */
 
 class UserController extends BaseController

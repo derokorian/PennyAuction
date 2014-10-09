@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Blog Model
+ * User Model
  * @author Ryan Pallas
- * @package SampleSite
+ * @package PennyAuction
  * @namespace App\Model
- * @since 2014-02-27
+ * @since 2014-10-08
  */
 namespace App\Model;
 
@@ -20,7 +20,7 @@ use Dero\Data\ParameterCollection;
 
 class UserModel extends BaseModel
 {
-    protected static $TABLE_NAME = 'users';
+    protected static $TABLE_NAME = 'user';
 
     protected static $COLUMNS = [
         'user_id' => [
@@ -116,7 +116,7 @@ class UserModel extends BaseModel
         }
         $strSql = 'SELECT u.user_id, u.username, u.email, u.active, u.first_name,
                           u.last_name, u.created, u.modified
-                     FROM `users` u '
+                     FROM `user` u '
             . $this->GenerateCriteria($oParams, $aOpts, 'u.');
         try
         {
@@ -130,16 +130,6 @@ class UserModel extends BaseModel
         } catch (DataException $e) {
             $oRet->AddError('Unable to query database', $e);
         }
-        if( !$oRet->HasFailure() )
-        {
-            $aUsers = $oRet->Get();
-            $oCModel = new CharacterModel($this->DB);
-            foreach( $aUsers as $oUser )
-            {
-                $oUser->characters = $oCModel->getCharacter(['user_id' => $oUser->user_id])->Get();
-            }
-            $oRet->Set($aUsers);
-        }
         return $oRet;
     }
 
@@ -151,7 +141,7 @@ class UserModel extends BaseModel
             $oUser->salt = $this->generateSalt();
             $oUser->password = $this->hashPassword($oUser->password, $oUser->salt );
             $oParams = new ParameterCollection();
-            $strSql = 'INSERT INTO `users` ';
+            $strSql = 'INSERT INTO `user` ';
             $strSql .= $this->GenerateInsert($oParams, (array) $oUser);
             try
             {
@@ -196,10 +186,10 @@ class UserModel extends BaseModel
         if( !$oRet->HasFailure() )
         {
             $oParams = new ParameterCollection();
-            $strSql = 'UPDATE `users` ';
+            $strSql = 'UPDATE `user` ';
             $strSql .= $this->GenerateCriteria($oParams, $aUser);
             $strSql = str_replace(['WHERE','AND'], ['SET',','], $strSql);
-            $strSql .= $this->GenerateCriteria($oParams, ['character_id' => $oUser->user_id]);
+            $strSql .= $this->GenerateCriteria($oParams, ['user_id' => $oUser->user_id]);
             try
             {
                 $oRet->Set(
@@ -236,9 +226,9 @@ class UserModel extends BaseModel
         }
         if( $oUser = $oRetVal->Get() )
         {
-            if( $this->hashPassword($strPass, $oRetVal->Get()->salt) === $oRetVal->Get()->password )
+            if( $this->hashPassword($strPass, $oUser->salt) === $oUser->password )
             {
-                $oRetVal->Set($oRetVal->Get()->user_id);
+                $oRetVal->Set($oUser->user_id);
             }
             else
             {

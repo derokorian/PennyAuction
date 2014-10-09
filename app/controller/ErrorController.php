@@ -7,9 +7,9 @@ use Dero\Core\TemplateEngine;
 /**
  * Error controller
  * @author Ryan Pallas
- * @package SampleSite
+ * @package PennyAuction
  * @namespace App\Controller
- * @since 2014-02-27
+ * @since 2014-10-08
  */
 
 class ErrorController extends BaseController

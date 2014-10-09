@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Default controller
+ * @author Ryan Pallas
+ * @package PennyAuction
+ * @namespace App\Controller
+ * @since 2014-10-08
+ */
+
 namespace App\Controller;
 use Dero\Core\BaseController;
 use Dero\Core\TemplateEngine;
