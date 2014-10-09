@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="ironKingdoms">
+    <head>
+        <title>Iron Kingdoms Character Sheet</title>
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded',function() {
+                document.getElementsByTagName('body')[0].style.display = 'block';
+            });
+        </script>
+        {ResourceManager>AddStyle(site)}
+        {ResourceManager>AddStyle(user)}
+        {ResourceManager>AddStyle(character)}
+        {ResourceManager>AddScript(jquery)}
+        {ResourceManager>AddScript(angular)}
+        {ResourceManager>AddScript(main)}
+        {ResourceManager>AddScript(modalDialog)}
+        {ResourceManager>AddScript(user/model)}
+        {ResourceManager>AddScript(user/controller)}
+        {ResourceManager>AddScript(character/model)}
+        {ResourceManager>AddScript(character/controller)}
+    </head>
+    <body ng-controller="characterCtrl" style="display: none;">
+        <header>
+            <h2>Iron Kingdoms Character Sheet</h2>
+            {tpl|user/main}
+            <span id="save-hint">Click the Iron Kingdoms icon to save!</span>
+        </header>
+        <main>

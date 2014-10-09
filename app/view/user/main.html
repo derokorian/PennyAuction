@@ -1,0 +1,59 @@
+<div class="userForm" ng-controller="userCtrl">
+    <div ng-show="bIsLoggedIn">
+        Logged in as {{user.username}}
+        <button class="user-action" ng-click="logout()">Logout</button>
+        <select id="character-select" ng-show="user.characters.length > 0"
+                ng-model="selectedCharacterId"
+                ng-options="c.character_id as c.name for c in user.characters">
+            <option value="">Add New</option>
+        </select>
+    </div>
+    <form id="frmUserLogin">
+        <div ng-hide="bIsLoggedIn">
+            <label for="loginUsername">Username</label>
+            <input type="text" id="loginUsername" ng-model="login.username" required pattern="[a-zA-Z0-9-_]+"/>
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" ng-model="login.password" required /><br />
+            <a class="user-action" ng-click="bIsRegistering = true; register = {}">Register</a>&nbsp;|&nbsp;
+            <a class="user-action" ng-click="bForgotPassword = true; forgot = {}">Forgot Password?</a>&nbsp;|&nbsp;
+            <button class="user-action" ng-click="doLogin()">Login</button>
+        </div>
+    </form>
+    <form id="frmRegister">
+        <div data-modal='{"width":390,"height":300}' data-show="bIsRegistering" title="User Registration">
+            <label for="registerUsername">Username</label>
+            <input type="text" id="registerUsername" ng-model="register.username" pattern="[a-zA-Z0-9_-]+" required />
+
+            <label for="registerEmail">Email</label>
+            <input type="email" id="registerEmail" ng-model="register.email" required ng-valid="register.email == register.email_confirm" />
+
+            <label for="registerEmailConfirm">Confirm Email</label>
+            <input type="email" id="registerEmailConfirm" ng-model="register.email_confirm" required ng-valid="register.email == register.email_confirm" />
+
+            <label for="registerPassword">Password</label>
+            <input type="password" id="registerPassword" ng-model="register.password" required ng-valid="register.password == register.password_confirm" />
+
+            <label for="registerPasswordConfirm">Confirm Password</label>
+            <input type="password" id="registerPasswordConfirm" ng-model="register.password_confirm" required ng-valid="register.password == register.password_confirm" />
+
+            <label for="registerFirstName">First Name</label>
+            <input type="text" id="registerFirstName" ng-model="register.first_name" pattern="[a-zA-Z]*" />
+
+            <label for="registerLastName">Last Name</label>
+            <input type="text" id="registerLastName" ng-model="register.last_name" pattern="[a-zA-Z]*" /><br />
+
+            <button class="user-action" ng-click="cancelRegister()">Cancel</button>&nbsp;|&nbsp;
+            <button class="user-action" ng-click="submitRegister()">Register</button>
+        </div>
+    </form>
+    <form id="frmPasswordReset">
+        <div data-modal='{"width":400,"height":100}' show="bForgotPassword">
+            <span>Please enter your email to reset your password</span>
+            <label for="registerEmail">Email</label>
+            <input type="email" id="forgotPasswordEmail" ng-model="forgot.email" required />
+
+            <button class="user-action" ng-click="cancelForgotPassword()">Cancel</button>&nbsp;|&nbsp;
+            <button class="user-action" ng-click="submitForgotPassword()">Recover</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,33 @@
+.userForm {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    text-align: center;
+    background-color: #888;
+}
+.userForm input[type=text],
+.userForm input[type=password],
+.userForm input[type=email] {
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #EEE;
+}
+#frmRegister input[type=text],
+#frmRegister input[type=password],
+.userForm input[type=email] {
+    width: 200px;
+    margin-top: 10px;
+}
+.userForm label {
+    width: 150px;
+    display: inline-block;
+}
+.user-action {
+    border: none;
+    background: none;
+    cursor: pointer;
+    letter-spacing: 1px;
+}
+.user-action:hover {
+    color: blue;
+}

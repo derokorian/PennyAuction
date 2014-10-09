@@ -1,0 +1,9 @@
+{
+    "default": {
+        "host": "localhost",
+        "name": "DeroFramework",
+        "user": "root",
+        "pass": "pass",
+        "port": 3306
+    }
+}

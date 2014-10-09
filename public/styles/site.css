@@ -1,0 +1,101 @@
+main, header, footer
+{
+    width: 1400px;
+    padding: 5px;
+    margin: 10px auto;
+}
+header
+{
+    position: relative;
+}
+footer
+{
+    text-align: center;
+    font-size: 0.8em;
+}
+.clear
+{
+    clear: both;
+    height: 0;
+}
+#results {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+#results.error {
+    background-color: #FFFB08;
+    color: #660000;
+    border: 1px solid #660000;
+}
+#results.success {
+    background-color: #FEFFE6;
+    color: #00E604;
+    border: 1px solid #000;
+}
+#debug {
+    position: fixed;
+    top: 5px;
+    left: 5px;
+    border: 2px solid #F00;
+}
+.ng-modal-overlay {
+    /* A dark translucent div that covers the whole screen */
+    position:fixed;
+    z-index:9999;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color:#000000;
+    opacity: 0.8;
+}
+.ng-modal-dialog {
+    /* A centered div above the overlay with a box shadow. */
+    z-index:10000;
+    position: fixed;
+    width: 50%; /* Default */
+
+    /* Center the dialog */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+
+    background-color: #fff;
+    box-shadow: 4px 4px 80px #000;
+
+    border: 1px solid #789AFF;
+    border-radius: 10px;
+}
+.ng-modal-dialog-content {
+    padding: 15px 10px 5px 10px;
+    text-align: left;
+}
+@media print
+{
+    footer,
+    header
+    {
+        display: none;
+    }
+    ::-webkit-input-placeholder { /* WebKit browsers */
+        color: transparent;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: transparent;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: transparent;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: transparent;
+    }
+    input,
+    select {
+        background: none;
+    }
+}
