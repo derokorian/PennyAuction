@@ -17,10 +17,8 @@ class DefaultController extends BaseController
 {
     public function index()
     {
-        Timing::start('controller');
         echo TemplateEngine::LoadView('header', ['title'=>'Index']);
-        echo TemplateEngine::LoadView('main.html');
+        echo TemplateEngine::LoadView('main');
         echo TemplateEngine::LoadView('footer');
-        Timing::end('controller');
     }
 }

@@ -27,8 +27,6 @@ class VersionController extends BaseController
 
     public function install()
     {
-        Timing::start('install');
-
         $db = Factory::GetDataInterface('default');
         $oUserModel = new UserModel($db);
 
@@ -53,12 +51,10 @@ class VersionController extends BaseController
             echo "Problem creating tables.\n";
             var_dump($e);
         }
-        Timing::end('install');
     }
 
     public function upgrade()
     {
-        Timing::start('upgrade');
         $db = Factory::GetDataInterface('default');
 
         try {
@@ -81,7 +77,5 @@ class VersionController extends BaseController
             echo "Problem creating tables.\n";
             var_dump($e);
         }
-
-        Timing::end('upgrade');
     }
 }

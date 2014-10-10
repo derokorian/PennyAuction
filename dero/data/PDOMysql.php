@@ -32,6 +32,10 @@ class PDOMysql implements DataInterface
 
     /**
      * Opens a connection for a query
+     * @param bool $bIsRead
+     * @returns \PDO
+     * @throws \UnexpectedValueException
+     * @throws DataException
      */
     protected function OpenConnection($bIsRead)
     {

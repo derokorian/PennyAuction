@@ -18,14 +18,19 @@ class AuctionController extends BaseController
     /** @var  \App\Model\AuctionModel */
     private $oModel;
 
+    /**
+     * @param AuctionModel $oModel
+     */
     public function __construct(AuctionModel $oModel)
     {
         $this->oModel = $oModel;
     }
 
+    /**
+     * @returns string
+     */
     public function addAuction()
     {
-        Timing::start('controller');
         $aRet = [];
         $oAuction = isset($_POST['auction']) && is_array($_POST['auction'])
             ? (object) $_POST['auction'] : null;
@@ -66,10 +71,12 @@ class AuctionController extends BaseController
                 }
             }
         }
-        echo json_encode($aRet);
-        Timing::end('controller');
+        return json_encode($aRet);
     }
 
+    /**
+     * @returns string
+     */
     public function getAuctions()
     {
         $aOpts = ['order_by' => 'adjusted_end_time DESC'];
@@ -111,6 +118,6 @@ class AuctionController extends BaseController
                 'error' => $oRet->GetError()
             ];
         }
-        echo json_encode($aRet);
+        return $aRet;
     }
 }

@@ -121,6 +121,7 @@ class Main
             }
             else
             {
+                Timing::start('controller');
                 if( count($aRoute['args']) > 1 )
                 {
                     $args = [];
@@ -131,12 +132,22 @@ class Main
                             $args[] = $aRoute['Match'][$arg];
                         }
                     }
-                    call_user_func_array([$oController, $method], $args);
+                    $mRet = call_user_func_array([$oController, $method], $args);
                 }
                 else
                 {
-                    $oController->{$method}($aRoute['Match'][$aRoute['args'][0]]);
+                    $mRet = $oController->{$method}($aRoute['Match'][$aRoute['args'][0]]);
                 }
+
+                if( is_scalar($mRet) )
+                {
+                    echo $mRet;
+                }
+                elseif( !empty($mRet) )
+                {
+                    echo json_encode($mRet);
+                }
+                Timing::end('controller');
             }
         };
 
