@@ -25,10 +25,14 @@ spl_autoload_register(function ($strClass)
     return FALSE;
 });
 
-Dero\Core\Timing::start('page_load');
+use Dero\Core\Timing;
 
 ob_start();
-Dero\Core\Main::Init();
 
-header('x-timing-elapsed: '. Dero\Core\Timing::end('page_load'));
+Timing::start('elapsed');
+Dero\Core\Main::Init();
+Timing::end('elapsed');
+
+Timing::setHeaderTimings();
+
 ob_end_flush();

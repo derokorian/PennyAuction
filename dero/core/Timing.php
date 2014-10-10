@@ -20,7 +20,27 @@ class Timing
         if( isset(self::$aTimes[$strTime]) )
         {
             self::$aTimes[$strTime] = round(microtime(true) * 1000 - self::$aTimes[$strTime], 2);
-            return self::$aTimes[$strTime] . "ms";
+        }
+    }
+
+    public static function getTimings()
+    {
+        return self::$aTimes;
+    }
+
+    public static function setHeaderTimings()
+    {
+        foreach(self::$aTimes as $strKey => $fTiming)
+        {
+            header(sprintf('X-%s-Timing: %0.4fms', ucfirst($strKey), $fTiming));
+        }
+    }
+
+    public static function printTimings()
+    {
+        foreach(self::$aTimes as $strKey => $fTiming)
+        {
+            printf("%s timing: %0.4fms\n", $strKey, $fTiming);
         }
     }
 }

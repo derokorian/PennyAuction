@@ -3,6 +3,7 @@
 namespace App\Controller;
 use Dero\Core\BaseController;
 use App\Model\UserModel;
+use Dero\Core\Timing;
 
 /**
  * User controller
@@ -23,6 +24,7 @@ class UserController extends BaseController
 
     public function login()
     {
+        Timing::start('controller');
         $strUsername = isset($_POST['username']) ? $_POST['username'] : null;
         $strPassword = isset($_POST['password']) ? $_POST['password'] : null;
         if( is_null($strUsername) || is_null($strPassword) )
@@ -53,10 +55,12 @@ class UserController extends BaseController
             }
         }
         echo json_encode($arrRet);
+        Timing::end('controller');
     }
 
     public function getCurrentUser()
     {
+        Timing::start('controller');
         if( isset($_SESSION['user_id']) )
         {
             $oRet = $this->oUserModel->getUser(['user_id' => $_SESSION['user_id']]);
@@ -73,6 +77,7 @@ class UserController extends BaseController
         {
             echo json_encode(['success' => false]);
         }
+        Timing::end('controller');
     }
 
     public function logout()
@@ -83,6 +88,7 @@ class UserController extends BaseController
 
     public function saveUser()
     {
+        Timing::start('controller');
         $oUser = isset($_POST['user']) && is_array($_POST['user'])
             ? (object) $_POST['user'] : null;
         if( is_null($oUser) )
@@ -145,10 +151,12 @@ class UserController extends BaseController
         }
 
         echo json_encode($aRet);
+        Timing::end('controller');
     }
 
     public function getUsers()
     {
+        Timing::start('controller');
         $aOpts = [];
         $this->setFilter($aOpts, $_GET);
         if( isset($aOpts['id']) )
@@ -189,5 +197,6 @@ class UserController extends BaseController
             ];
         }
         echo json_encode($aRet);
+        Timing::end('controller');
     }
 }

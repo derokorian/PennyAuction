@@ -23,6 +23,12 @@ abstract class BaseModel
     protected static $COLUMNS = [];
 
     /**
+     * @const Used in queries that do a group concatenation
+     */
+    const CONCAT_SEPARATOR = '--|--';
+
+
+    /**
      * Initializes a instance of BaseModel
      * @param DataInterface $DB
      */

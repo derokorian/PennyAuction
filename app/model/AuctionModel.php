@@ -9,6 +9,7 @@
  */
 namespace App\Model;
 
+use Dero\Core\RetVal;
 use Dero\Data\BaseModel;
 use Dero\Data\DataException;
 use Dero\Data\DataInterface;
@@ -72,6 +73,7 @@ class AuctionModel extends BaseModel
 
     /**
      * Constructor
+     * @param $db
      */
     public function __construct($db = null)
     {
@@ -80,6 +82,10 @@ class AuctionModel extends BaseModel
         parent::__construct($db);
     }
 
+    /**
+     * @param $oAuction
+     * @return RetVal
+     */
     public function insertAuction(&$oAuction)
     {
         $oRet = $this->validate((array) $oAuction);
@@ -121,4 +127,36 @@ class AuctionModel extends BaseModel
         }
         return $oRet;
     }
+
+    /**
+     * @param array $aOpts
+     * @return RetVal
+     */
+    public function getAuction(Array $aOpts)
+    {
+        $oRet = new RetVal();
+        $oParams = new ParameterCollection();
+        $strSql = 'SELECT a.auction_id, a.min_amount, a.original_end_time, a.adjusted_end_time,
+                          u.user_id, u.username,
+                          i.item_id, i.name
+                     FROM `auction` a
+                     JOIN `user` u USING(user_id)
+                     JOIN `item` i USING(item_id) '
+            . $this->GenerateCriteria($oParams, $aOpts, 'a.');
+        try
+        {
+            $oRet->Set(
+                $this->DB
+                    ->Prepare($strSql)
+                    ->BindParams($oParams)
+                    ->Execute()
+                    ->GetAll()
+            );
+        } catch (DataException $e) {
+            file_put_contents('/tmp/getAuction.error.log', $e->getMessage());
+            $oRet->AddError('Unable to query database', $e);
+        }
+        return $oRet;
+    }
+
 }

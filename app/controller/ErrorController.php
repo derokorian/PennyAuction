@@ -3,6 +3,7 @@
 namespace App\Controller;
 use Dero\Core\BaseController;
 use Dero\Core\TemplateEngine;
+use Dero\Core\Timing;
 
 /**
  * Error controller
@@ -16,10 +17,12 @@ class ErrorController extends BaseController
 {
     public function error404()
     {
+        Timing::start('controller');
         header('HTTP/1.1 404 Not Found');
         echo TemplateEngine::LoadView('header', ['title'=>'Error']);
         echo '404 Page not found';
         echo TemplateEngine::LoadView('footer');
+        Timing::end('controller');
     }
 
     public function __call($func, Array $args)

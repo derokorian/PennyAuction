@@ -26,6 +26,10 @@ spl_autoload_register(function ($strClass)
     return FALSE;
 });
 
-Dero\Core\Timing::start('program-time');
+Dero\Core\Timing::start('elapsed');
 Dero\Core\Main::Init();
-printf("\nx-timing-elapsed: %s\n", Dero\Core\Timing::end('program-time'));
+Dero\Core\Timing::end('elapsed');
+
+echo "\n";
+Dero\Core\Timing::printTimings();
+echo "\n";

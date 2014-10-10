@@ -21,4 +21,14 @@ class BidController extends BaseController
     {
         $this->oModel = $oModel;
     }
+
+    public function getBids()
+    {
+
+    }
+
+    public function addBid()
+    {
+
+    }
 }
