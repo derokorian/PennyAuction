@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Controller;
-use App\Model\CharacterModel;
+use App\Model\AuctionModel;
 use App\Model\UserModel;
+use App\Model\BidModel;
 use Dero\Data\Factory;
 use Dero\Core\BaseController;
 use Dero\Core\Timing;
@@ -28,12 +29,12 @@ class VersionController extends BaseController
     public function install()
     {
         $db = Factory::GetDataInterface('default');
-        $oUserModel = new UserModel($db);
 
         echo "Creating tables...\n";
         try
         {
             Timing::start('user');
+            $oUserModel = new UserModel($db);
             $oRet = $oUserModel->CreateTable();
             if( $oRet->HasFailure() )
             {
@@ -42,6 +43,28 @@ class VersionController extends BaseController
                 return;
             }
             Timing::end('user');
+
+            Timing::start('auction');
+            $oAuctionModel = new AuctionModel($db);
+            $oRet = $oAuctionModel->CreateTable();
+            if( $oRet->HasFailure() )
+            {
+                echo "Error on auction table\n";
+                var_dump($oRet);
+                return;
+            }
+            Timing::end('auction');
+
+            Timing::start('bid');
+            $oBidModel = new BidModel($db);
+            $oRet = $oBidModel->CreateTable();
+            if( $oRet->HasFailure() )
+            {
+                echo "Error on bid table\n";
+                var_dump($oRet);
+                return;
+            }
+            Timing::end('bid');
 
             if( !$oRet->HasFailure() )
             {
@@ -68,6 +91,28 @@ class VersionController extends BaseController
                 return;
             }
             Timing::end('user');
+
+            Timing::start('auction');
+            $oAuctionModel = new AuctionModel($db);
+            $oRet = $oAuctionModel->VerifyTableDefinition();
+            if( $oRet->HasFailure() )
+            {
+                echo "Error on auction table\n";
+                var_dump($oRet);
+                return;
+            }
+            Timing::end('auction');
+
+            Timing::start('bid');
+            $oBidModel = new BidModel($db);
+            $oRet = $oBidModel->VerifyTableDefinition();
+            if( $oRet->HasFailure() )
+            {
+                echo "Error on bid table\n";
+                var_dump($oRet);
+                return;
+            }
+            Timing::end('bid');
 
             if( !$oRet->HasFailure() )
             {
