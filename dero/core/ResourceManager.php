@@ -10,7 +10,7 @@ class ResourceManager {
     private static $KNOWN_SCRIPTS = [
         [
             'name' => 'jquery',
-            'src' => '/jquery-1.11.0.min.js',
+            'src' => 'jquery-1.11.0.min.js',
             'dep' => []
         ],
         [
@@ -92,10 +92,10 @@ class ResourceManager {
     }
 
     public static function LoadScripts() {
-        return TemplateEngine::LoadView('styles',['styles' => self::$styles]);
+        return TemplateEngine::LoadView('scripts',['scripts' => self::$scripts]);
     }
 
     public static function LoadStyles() {
-        return TemplateEngine::LoadView('scripts',['scripts' => self::$scripts]);
+        return TemplateEngine::LoadView('styles',['styles' => static::$styles]);
     }
 } 
