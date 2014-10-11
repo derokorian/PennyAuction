@@ -4,6 +4,6 @@ php:
   - 5.5
   - 5.4
 before_script:
-  - echo 'date.timezone = "Europe/Paris"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - echo 'date.timezone = "UTC"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 script:
   - phpunit --configuration ./test/unit/php/phpunit.xml
