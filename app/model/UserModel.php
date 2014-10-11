@@ -9,7 +9,7 @@
  */
 namespace App\Model;
 
-use Dero\Core\RetVal;
+use Dero\Core\Retval;
 use Dero\Data\BaseModel;
 use Dero\Data\DataException;
 use Dero\Data\DataInterface;
@@ -108,7 +108,7 @@ class UserModel extends BaseModel
 
     public function getUser(Array $aOpts)
     {
-        $oRet = new RetVal();
+        $oRet = new Retval();
         $oParams = new ParameterCollection();
         if( !isset($aOpts['order_by']) )
         {
@@ -207,7 +207,7 @@ class UserModel extends BaseModel
 
     public function checkLogin($strUser, $strPass)
     {
-        $oRetVal = new RetVal();
+        $oRetVal = new Retval();
         $oParam = new Parameter('username', $strUser, DB_PARAM_STR);
         $strSql = 'SELECT user_id, password, salt FROM ' . static::$TABLE_NAME;
         $strSql .= ' WHERE username = :username AND active = 1';

@@ -1,7 +1,7 @@
 <?php
 
 namespace Dero\Data;
-use Dero\Core\RetVal;
+use Dero\Core\Retval;
 
 /**
  * Base Model class from which all models inherit
@@ -39,11 +39,11 @@ abstract class BaseModel
 
     /**
      * @param array $aVars
-     * @return RetVal
+     * @return Retval
      */
     public function validate(Array $aVars)
     {
-        $oRetVal = new RetVal();
+        $oRetVal = new Retval();
         foreach( static::$COLUMNS as $strCol => $aCol )
         {
             if( isset($aCol['required']) &&
@@ -376,11 +376,11 @@ abstract class BaseModel
 
     /**
      * Executes the create table script returned by GenerateCreateTable
-     * @returns \Dero\Core\RetVal
+     * @returns \Dero\Core\Retval
      */
     public function CreateTable()
     {
-        $oRetVal = new RetVal();
+        $oRetVal = new Retval();
         $strSql = $this->GenerateCreateTable();
         try {
             $oRetVal->Set($this->DB->Query($strSql));
@@ -393,11 +393,11 @@ abstract class BaseModel
     /**
      * Verifies the current tables definition and updates if necessary
      * @throws \UnexpectedValueException
-     * @returns \Dero\Core\RetVal
+     * @returns \Dero\Core\Retval
      */
     public function VerifyTableDefinition()
     {
-        $oRetVal = new RetVal();
+        $oRetVal = new Retval();
         $strSql = sprintf("SHOW TABLES LIKE '%s'", static::$TABLE_NAME);
         try {
             $oRetVal->Set(

@@ -2,10 +2,9 @@
 
 namespace Dero\Core;
 
-class RetVal
+class Retval
 {
     private $mRetval = null;
-    private $iErrorCode = [];
     private $strError = [];
     private $oException = [];
 
@@ -19,25 +18,28 @@ class RetVal
         return $this->mRetval;
     }
 
-    public function AddError($strMessage, \Exception $oException = null, $iCode = null)
+    public function AddError($strMessage, \Exception $oException = null)
     {
         $this->strError[] = $strMessage;
         $this->oException[] = $oException;
-        $this->iErrorCode[] = $iCode;
     }
 
     public function HasFailure()
     {
-        return count($this->strError) > 0 || count($this->oException) > 0;
+        return count($this->strError) > 0;
     }
 
     public function GetError()
     {
-        return $this->strError;
+        return count($this->strError) == 0 ? null :
+            (count($this->strError) == 1 ? $this->strError[0] :
+                $this->strError);
     }
 
     public function GetException()
     {
-        return $this->oException;
+        return count($this->oException) == 0 ? null :
+            (count($this->oException) == 1 ? $this->oException[0] :
+                $this->oException);
     }
 } 

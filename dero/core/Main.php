@@ -11,6 +11,10 @@ namespace Dero\Core;
 
 class Main
 {
+    /**
+     * Initializes and runs the application
+     * @codeCoverageIgnore
+     */
     public static function init()
     {
         /*
@@ -52,6 +56,10 @@ class Main
         self::LoadRoute();
     }
 
+    /**
+     * Loads the controllers and models necessary to complete the given route request
+     * @codeCoverageIgnore
+     */
     private static function LoadRoute()
     {
         $bRouteFound = false;

@@ -9,7 +9,7 @@
  */
 namespace App\Model;
 
-use Dero\Core\RetVal;
+use Dero\Core\Retval;
 use Dero\Data\BaseModel;
 use Dero\Data\DataException;
 use Dero\Data\DataInterface;
@@ -84,7 +84,7 @@ class AuctionModel extends BaseModel
 
     /**
      * @param $oAuction
-     * @return RetVal
+     * @return Retval
      */
     public function insertAuction(&$oAuction)
     {
@@ -130,11 +130,11 @@ class AuctionModel extends BaseModel
 
     /**
      * @param array $aOpts
-     * @return RetVal
+     * @return Retval
      */
     public function getAuction(Array $aOpts)
     {
-        $oRet = new RetVal();
+        $oRet = new Retval();
         $oParams = new ParameterCollection();
         $strSql = 'SELECT a.auction_id, a.min_amount, a.original_end_time, a.adjusted_end_time,
                           u.user_id, u.username,

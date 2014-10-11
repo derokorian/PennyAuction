@@ -16,7 +16,7 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
                 ['default']
             )]
         );
-        $oRetval = new \Dero\Core\RetVal();
+        $oRetval = new \Dero\Core\Retval();
         $oRetval->Set([]);
         $oModel->method('getAuction')->willReturn($oRetval);
         $this->oController = new \App\Controller\AuctionController(
