@@ -95,7 +95,7 @@ class Config
             }
             return $last;
         }
-        return NULL;
+        return 0;
     }
 }
 

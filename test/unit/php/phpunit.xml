@@ -5,7 +5,7 @@
         backupStaticAttributes="false"
         bootstrap="bootstrap.php"
         cacheTokens="false"
-        colors="true"
+        colors="false"
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
         convertWarningsToExceptions="true"
@@ -29,6 +29,16 @@
     <testsuites>
         <testsuite name="Test Models">
             <directory>./app/model/</directory>
+        </testsuite>
+    </testsuites>
+    <testsuites>
+        <testsuite name="Test Framework Core">
+            <directory>./dero/core/</directory>
+        </testsuite>
+    </testsuites>
+    <testsuites>
+        <testsuite name="Test Framework Data">
+            <directory>./dero/data/</directory>
         </testsuite>
     </testsuites>
 </phpunit>

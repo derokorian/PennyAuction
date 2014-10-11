@@ -13,7 +13,6 @@ class Main
 {
     public static function init()
     {
-        define('APP_ROOT', ROOT . DS . 'app' . DS);
         /*
          * Define error reporting settings
          */
