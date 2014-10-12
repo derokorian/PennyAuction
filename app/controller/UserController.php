@@ -188,7 +188,7 @@ class UserController extends BaseController
                 }, $oRet->Get());
                 $c = count($aChars);
                 $aRet = [
-                    'success' => "Found $c characters",
+                    'success' => "Found $c users",
                     'count' => $c,
                     'users' => $aChars
                 ];
@@ -196,7 +196,7 @@ class UserController extends BaseController
             else
             {
                 $aRet = [
-                    'success' => 'Found 0 characters',
+                    'success' => 'Found 0 users',
                     'count' => 0,
                     'users' => []
                 ];

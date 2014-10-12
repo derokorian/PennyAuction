@@ -42,6 +42,10 @@ class UserControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mRet);
         $this->assertArrayHasKey('error', $mRet);
+        $this->assertEquals(
+            'Both a username and a password are required.',
+            $mRet['error']
+        );
         $this->assertHeaderStatus(422);
     }
 
@@ -57,6 +61,10 @@ class UserControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mRet);
         $this->assertArrayHasKey('error', $mRet);
+        $this->assertEquals(
+            'username/password mismatch',
+            $mRet['error']
+        );
         $this->assertHeaderStatus(403);
     }
 
@@ -76,6 +84,10 @@ class UserControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mRet);
         $this->assertArrayHasKey('error', $mRet);
+        $this->assertEquals(
+            'problem querying database',
+            $mRet['error']
+        );
         $this->assertHeaderStatus(500);
     }
 
@@ -95,6 +107,7 @@ class UserControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mRet);
         $this->assertArrayHasKey('success', $mRet);
+        $this->assertTrue($mRet['success']);
     }
 
     public function testGetCurrentFailureNoSession()
@@ -116,6 +129,10 @@ class UserControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mRet);
         $this->assertArrayHasKey('error', $mRet);
+        $this->assertEquals(
+            'user not found',
+            $mRet['error']
+        );
         $this->assertArrayNotHasKey('user_id', $_SESSION);
     }
 
@@ -131,6 +148,7 @@ class UserControllerTest extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('success', $mRet);
         $this->assertTrue($mRet['success']);
         $this->assertArrayHasKey('user_id', $_SESSION);
+        $this->assertEquals(123, $_SESSION['user_id']);
     }
 
     public function testLogout()
@@ -314,7 +332,7 @@ class UserControllerTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetUserFailure()
+    public function testGetUsersFailure()
     {
         $oGetRetval = new Retval();
         $oGetRetval->AddError('failed to execute query');
@@ -330,7 +348,7 @@ class UserControllerTest extends PHPUnit_Framework_TestCase
         $this->assertHeaderStatus(500);
     }
 
-    public function testGetUserEmpty()
+    public function testGetUsersEmpty()
     {
         $oGetRetval = new Retval();
         $oGetRetval->Set([]);
@@ -339,11 +357,15 @@ class UserControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mRet);
         $this->assertArrayHasKey('success', $mRet);
+        $this->assertEquals(
+            'Found 0 users',
+            $mRet['success']
+        );
         $this->assertArrayHasKey('count', $mRet);
         $this->assertEquals(0, $mRet['count']);
     }
 
-    public function testGetUserNotEmpty()
+    public function testGetUsersNotEmpty()
     {
         $oGetRetval = new Retval();
         $oGetRetval->Set([new StdClass(),new StdClass()]);
@@ -352,6 +374,10 @@ class UserControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mRet);
         $this->assertArrayHasKey('success', $mRet);
+        $this->assertEquals(
+            'Found 2 users',
+            $mRet['success']
+        );
         $this->assertArrayHasKey('count', $mRet);
         $this->assertEquals(2, $mRet['count']);
     }
