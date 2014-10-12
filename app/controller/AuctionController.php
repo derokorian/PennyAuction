@@ -71,7 +71,7 @@ class AuctionController extends BaseController
                 }
             }
         }
-        return json_encode($aRet);
+        return $aRet;
     }
 
     /**
@@ -107,7 +107,7 @@ class AuctionController extends BaseController
                 $aRet = [
                     'success' => 'Found 0 auctions',
                     'count' => 0,
-                    'characters' => []
+                    'auctions' => []
                 ];
             }
         }

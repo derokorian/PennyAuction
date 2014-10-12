@@ -84,12 +84,12 @@ class Main
 
         // Load defined routes
         $aRoutes = [];
-        $files = glob(ROOT . '/app/routes/*.php');
+        $files = glob(ROOT . '/dero/routes/*.php');
         foreach($files as $file)
         {
             include_once $file;
         }
-        $files = glob(ROOT . '/dero/routes/*.php');
+        $files = glob(ROOT . '/app/routes/*.php');
         foreach($files as $file)
         {
             include_once $file;
@@ -122,13 +122,13 @@ class Main
                 $method = $aRoute['method'];
             }
 
+            Timing::start('controller');
             if( empty($aRoute['args']) || !isset($aRoute['Match'][$aRoute['args'][0]]))
             {
-                $oController->{$method}();
+                $mRet = $oController->{$method}();
             }
             else
             {
-                Timing::start('controller');
                 if( count($aRoute['args']) > 1 )
                 {
                     $args = [];
@@ -145,17 +145,17 @@ class Main
                 {
                     $mRet = $oController->{$method}($aRoute['Match'][$aRoute['args'][0]]);
                 }
-
-                if( is_scalar($mRet) )
-                {
-                    echo $mRet;
-                }
-                elseif( !empty($mRet) )
-                {
-                    echo json_encode($mRet);
-                }
-                Timing::end('controller');
             }
+
+            if( is_scalar($mRet) )
+            {
+                echo $mRet;
+            }
+            elseif( !empty($mRet) )
+            {
+                echo json_encode($mRet);
+            }
+            Timing::end('controller');
         };
 
         // Attempt to find the requested route

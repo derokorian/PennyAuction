@@ -19,6 +19,7 @@
         timeoutForSmallTests="1"
         timeoutForMediumTests="10"
         timeoutForLargeTests="60"
+        stderr="true"
         strict="false"
         verbose="false">
     <testsuites>
