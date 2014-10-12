@@ -73,7 +73,7 @@ class Parameter
 
     /**
      * Sets the value to be bound
-     * @param str|int|null|bool $Value
+     * @param string|int|null|bool $Value
      * @return void
      */
     public function SetValue($Value)
@@ -131,7 +131,7 @@ class Parameter
             case DB_PARAM_DEC:
                 return \PDO::PARAM_STR;
             default:
-                throw new \UnexpectedValueException('Unexpected value found in Parameter::Type for MySQL');
+                throw new \UnexpectedValueException('Unexpected value found in Parameter::Type for PDO::MySQL');
         }
     }
 

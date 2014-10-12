@@ -16,16 +16,9 @@ class ParameterCollection extends Collection
      * @throws
      * @return ParameterCollection
      */
-    public function Add ($aParam)
+    public function Add (Parameter $aParam)
     {
-        if( !$aParam instanceof Parameter )
-        {
-            throw new \InvalidArgumentException('Only Dero\Data\Parameter may be passed to ' . __METHOD__);
-        }
-        else
-        {
-            parent::add($aParam);
-            return $this;
-        }
+        parent::add($aParam);
+        return $this;
     }
 }
