@@ -4,7 +4,6 @@ namespace Test\Unit\Php\Traits;
 
 trait assertHeaders
 {
-    // TODO: Figure out how to implement this
     protected function assertHeaderStatus($iStatusCode)
     {
         $this->assertEquals($iStatusCode, http_response_code());
