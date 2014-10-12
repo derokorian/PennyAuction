@@ -15,6 +15,7 @@ use Dero\Core\Timing;
 
 class UserController extends BaseController
 {
+    /** @var UserModel  */
     private $oUserModel;
 
     public function __construct(UserModel $oUserModel)
@@ -22,6 +23,10 @@ class UserController extends BaseController
         $this->oUserModel = $oUserModel;
     }
 
+    /**
+     * Processes a login request
+     * @return array
+     */
     public function login()
     {
         $strUsername = !empty($_POST['username']) ? $_POST['username'] : null;
@@ -56,6 +61,10 @@ class UserController extends BaseController
         return $aRet;
     }
 
+    /**
+     * Returns the currently logged in user
+     * @return array
+     */
     public function getCurrentUser()
     {
         if( isset($_SESSION['user_id']) )
@@ -78,12 +87,19 @@ class UserController extends BaseController
         return $aRet;
     }
 
+    /**
+     * Unsets the session for a user to no longer be logged in
+     * @return void
+     */
     public function logout()
     {
         $_SESSION['user_id'] = null;
         unset($_SESSION['user_id']);
     }
 
+    /**
+     * @return array
+     */
     public function saveUser()
     {
         $oUser = isset($_POST['user']) && is_array($_POST['user'])
@@ -149,6 +165,9 @@ class UserController extends BaseController
         return $aRet;
     }
 
+    /**
+     * @return array
+     */
     public function getUsers()
     {
         $aOpts = [];

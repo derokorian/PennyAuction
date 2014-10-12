@@ -153,7 +153,6 @@ class AuctionModel extends BaseModel
                     ->GetAll()
             );
         } catch (DataException $e) {
-            file_put_contents('/tmp/getAuction.error.log', $e->getMessage());
             $oRet->AddError('Unable to query database', $e);
         }
         return $oRet;

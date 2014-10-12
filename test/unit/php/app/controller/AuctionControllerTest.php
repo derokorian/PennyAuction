@@ -45,6 +45,10 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mResult);
         $this->assertArrayHasKey('success', $mResult);
+        $this->assertEquals(
+            'Found 0 auctions',
+            $mResult['success']
+        );
         $this->assertArrayHasKey('count', $mResult);
         $this->assertEquals(0, $mResult['count']);
     }
@@ -58,6 +62,10 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mResult);
         $this->assertArrayHasKey('success', $mResult);
+        $this->assertEquals(
+            'Found 3 auctions',
+            $mResult['success']
+        );
         $this->assertArrayHasKey('count', $mResult);
         $this->assertEquals(3, $mResult['count']);
     }
@@ -71,15 +79,23 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mResult);
         $this->assertArrayHasKey('error', $mResult);
+        $this->assertEquals(
+            'failed to fetch data',
+            $mResult['error']
+        );
         $this->assertHeaderStatus(500, 'Internal Server Error');
     }
 
-    public function testAddAuctionsFailureNoAuction()
+    public function testAddAuctionFailureNoAuction()
     {
         $mResult = $this->oController->addAuction();
 
         $this->assertNotEmpty($mResult);
         $this->assertArrayHasKey('error', $mResult);
+        $this->assertEquals(
+            'No auction information found',
+            $mResult['error']
+        );
         $this->assertHeaderStatus(422, 'Unprocessable Entity');
     }
 
@@ -90,6 +106,10 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mResult);
         $this->assertArrayHasKey('error', $mResult);
+        $this->assertEquals(
+            'You must be logged in to create auctions',
+            $mResult['error']
+        );
         $this->assertHeaderStatus(403, 'Forbidden');
     }
 
@@ -106,6 +126,10 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mResult);
         $this->assertArrayHasKey('error', $mResult);
+        $this->assertEquals(
+            'did not validate',
+            $mResult['error']
+        );
         $this->assertHeaderStatus(422, 'Unprocessable Entity');
     }
 
@@ -125,6 +149,10 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mResult);
         $this->assertArrayHasKey('error', $mResult);
+        $this->assertEquals(
+            'failed to insert',
+            $mResult['error']
+        );
         $this->assertHeaderStatus(422, 'Unprocessable Entity');
     }
 
@@ -144,6 +172,10 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mResult);
         $this->assertArrayHasKey('success', $mResult);
+        $this->assertEquals(
+            'Successfully added new auction',
+            $mResult['success']
+        );
         $this->assertArrayHasKey('auction', $mResult);
         $this->assertHeaderStatus(201, 'Created');
     }

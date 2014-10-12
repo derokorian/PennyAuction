@@ -27,7 +27,7 @@ class AuctionController extends BaseController
     }
 
     /**
-     * @returns string
+     * @returns array
      */
     public function addAuction()
     {
@@ -75,7 +75,7 @@ class AuctionController extends BaseController
     }
 
     /**
-     * @returns string
+     * @returns array
      */
     public function getAuctions()
     {
