@@ -9,7 +9,6 @@
  */
 
 namespace Dero\Data;
-use Dero\Core\Config;
 
 class Factory
 {

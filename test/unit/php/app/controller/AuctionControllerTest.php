@@ -1,5 +1,7 @@
 <?php
 
+use Dero\Core\Retval;
+
 class AuctionControllerTest extends PHPUnit_Framework_TestCase
 {
     use \Test\Unit\Php\Traits\assertHeaders;
@@ -14,7 +16,7 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
     {
         $this->oModel = $this->getMock(
             'App\Model\AuctionModel',
-            ['getAuction','validate','insertAuction'],
+            ['validate','getAuction','insertAuction'],
             [$this->getMock(
                 'Dero\Data\PDOMysql',
                 null,
@@ -36,7 +38,7 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
 
     public function testGetAuctionsEmpty()
     {
-        $oRetval = new \Dero\Core\Retval();
+        $oRetval = new Retval();
         $oRetval->Set([]);
         $this->oModel->method('getAuction')->willReturn($oRetval);
         $mResult = $this->oController->getAuctions();
@@ -49,7 +51,7 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
 
     public function testGetAuctionsNotEmpty()
     {
-        $oRetval = new \Dero\Core\Retval();
+        $oRetval = new Retval();
         $oRetval->Set([1,2,3]);
         $this->oModel->method('getAuction')->willReturn($oRetval);
         $mResult = $this->oController->getAuctions();
@@ -62,7 +64,7 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
 
     public function testGetAuctionsFailure()
     {
-        $oRetval = new \Dero\Core\Retval();
+        $oRetval = new Retval();
         $oRetval->AddError('failed to fetch data');
         $this->oModel->method('getAuction')->willReturn($oRetval);
         $mResult = $this->oController->getAuctions();
@@ -96,7 +98,7 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
         $_POST['auction'] = [];
         $_SESSION['user_id'] = 1;
 
-        $oRetval = new \Dero\Core\Retval();
+        $oRetval = new Retval();
         $oRetval->AddError('did not validate');
         $this->oModel->method('validate')->willReturn($oRetval);
 
@@ -112,10 +114,10 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
         $_POST['auction'] = [];
         $_SESSION['user_id'] = 1;
 
-        $oValidateRetval = new \Dero\Core\Retval();
+        $oValidateRetval = new Retval();
         $this->oModel->method('validate')->willReturn($oValidateRetval);
 
-        $oInsertRetval = new \Dero\Core\Retval();
+        $oInsertRetval = new Retval();
         $oInsertRetval->AddError('failed to insert');
         $this->oModel->method('insertAuction')->willReturn($oInsertRetval);
 
@@ -131,10 +133,10 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
         $_POST['auction'] = [];
         $_SESSION['user_id'] = 1;
 
-        $oValidateRetval = new \Dero\Core\Retval();
+        $oValidateRetval = new Retval();
         $this->oModel->method('validate')->willReturn($oValidateRetval);
 
-        $oInsertRetval = new \Dero\Core\Retval();
+        $oInsertRetval = new Retval();
         $oInsertRetval->Set([]);
         $this->oModel->method('insertAuction')->willReturn($oInsertRetval);
 

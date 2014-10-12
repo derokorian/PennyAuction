@@ -15,21 +15,16 @@ use Dero\Core\Timing;
 
 class ErrorController extends BaseController
 {
+    /**
+     * @return string
+     * @codeCoverageIgnore
+     */
     public function error404()
     {
         header('HTTP/1.1 404 Not Found');
 
-        echo TemplateEngine::LoadView('header', ['title'=>'Error']);
-        echo '404 Page not found';
-        echo TemplateEngine::LoadView('footer');
-    }
-
-    public function __call($func, Array $args)
-    {
-        if( is_numeric($func) &&
-            method_exists($this, 'error' . $func) )
-        {
-            call_user_func([$this, 'error' . $func]);
-        }
+        return TemplateEngine::LoadView('header', ['title'=>'Error'])
+             . '<h1 class="error_title">404 Page not found</h1>'
+             . TemplateEngine::LoadView('footer');
     }
 }

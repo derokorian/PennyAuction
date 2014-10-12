@@ -11,14 +11,17 @@
 namespace App\Controller;
 use Dero\Core\BaseController;
 use Dero\Core\TemplateEngine;
-use Dero\Core\Timing;
 
 class DefaultController extends BaseController
 {
+    /**
+     * @return string
+     * @codeCoverageIgnore
+     */
     public function index()
     {
-        echo TemplateEngine::LoadView('header', ['title'=>'Index']);
-        echo TemplateEngine::LoadView('main');
-        echo TemplateEngine::LoadView('footer');
+        return TemplateEngine::LoadView('header', ['title'=>'Index'])
+             . TemplateEngine::LoadView('main')
+             . TemplateEngine::LoadView('footer');
     }
 }

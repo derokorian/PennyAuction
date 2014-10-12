@@ -24,19 +24,18 @@ class UserController extends BaseController
 
     public function login()
     {
-        $strUsername = isset($_POST['username']) ? $_POST['username'] : null;
-        $strPassword = isset($_POST['password']) ? $_POST['password'] : null;
+        $strUsername = !empty($_POST['username']) ? $_POST['username'] : null;
+        $strPassword = !empty($_POST['password']) ? $_POST['password'] : null;
         if( is_null($strUsername) || is_null($strPassword) )
         {
             header('HTTP/1.1 422 Unprocessable Entity');
-            echo "Both a username and a password are required.";
-            return;
+            return ['error' => "Both a username and a password are required."];
         }
         $oRet = $this->oUserModel->checkLogin($strUsername, $strPassword);
         if( $oRet->HasFailure() )
         {
-            header('HTTP/1.1 500 Internal Server Error');
-            $arrRet = json_encode(['error' => $oRet->GetError()]);
+            header('HTTP/1.1 403 Forbidden');
+            $aRet = ['error' => $oRet->GetError()];
         }
         else
         {
@@ -45,15 +44,16 @@ class UserController extends BaseController
                          ->getUser(['user_id' => $oRet->Get()]);
             if( $oRet->HasFailure() )
             {
+                unset($_SESSION['user_id']);
                 header('HTTP/1.1 500 Internal Server Error');
-                $arrRet = json_encode(['error' => $oRet->GetError()]);
+                $aRet = ['error' => $oRet->GetError()];
             }
             else
             {
-                $arrRet =  ['success' => true, 'user' => $oRet->Get()[0]];
+                $aRet =  ['success' => true, 'user' => $oRet->Get()[0]];
             }
         }
-        echo json_encode($arrRet);
+        return $aRet;
     }
 
     public function getCurrentUser()
@@ -63,23 +63,25 @@ class UserController extends BaseController
             $oRet = $this->oUserModel->getUser(['user_id' => $_SESSION['user_id']]);
             if( $oRet->HasFailure() )
             {
-                echo json_encode(['error' => $oRet->GetError()]);
+                $this->logout();
+                $aRet = ['error' => $oRet->GetError()];
             }
             else
             {
-                echo json_encode(['success' => true, 'user' => $oRet->Get()[0]]);
+                $aRet =['success' => true, 'user' => $oRet->Get()[0]];
             }
         }
         else
         {
-            echo json_encode(['success' => false]);
+            $aRet =['success' => false];
         }
+        return $aRet;
     }
 
     public function logout()
     {
-        $_SESSION['user'] = null;
-        unset($_SESSION['user']);
+        $_SESSION['user_id'] = null;
+        unset($_SESSION['user_id']);
     }
 
     public function saveUser()
@@ -89,8 +91,7 @@ class UserController extends BaseController
         if( is_null($oUser) )
         {
             header('HTTP/1.1 422 Unprocessable Entity');
-            echo "No user information found";
-            return;
+            return ["error"=> "No user information found"];
         }
         $oRet = $this->oUserModel->validate((array) $oUser);
         if( $oRet->HasFailure() )
@@ -145,7 +146,7 @@ class UserController extends BaseController
             }
         }
 
-        echo json_encode($aRet);
+        return $aRet;
     }
 
     public function getUsers()
@@ -170,7 +171,7 @@ class UserController extends BaseController
                 $aRet = [
                     'success' => "Found $c characters",
                     'count' => $c,
-                    'characters' => $aChars
+                    'users' => $aChars
                 ];
             }
             else
@@ -178,7 +179,7 @@ class UserController extends BaseController
                 $aRet = [
                     'success' => 'Found 0 characters',
                     'count' => 0,
-                    'characters' => []
+                    'users' => []
                 ];
             }
         }
@@ -189,6 +190,6 @@ class UserController extends BaseController
                 'error' => $oRet->GetError()
             ];
         }
-        echo json_encode($aRet);
+        return $aRet;
     }
 }
