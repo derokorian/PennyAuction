@@ -11,6 +11,11 @@ class Column
     private $mDefault = null;
     private $bNullable = false;
 
+    /**
+     * @param string $strName
+     * @param $cType
+     * @throws \InvalidArgumentException
+     */
     public function __construct($strName, $cType)
     {
         if( is_string($strName) && preg_match('/^[a-z0-9_]+$/i', $strName) )
@@ -33,13 +38,18 @@ class Column
         }
     }
 
+    /**
+     * @param int|null $iLen
+     * @returns void|int
+     * @throws \UnexpectedValueException
+     */
     public function Length($iLen = null)
     {
         if( is_null($iLen) )
         {
             return $this->iLength;
         }
-        if( is_numeric($iLen) && ceil($iLen) === floor($iLen) )
+        elseif( is_numeric($iLen) && ceil($iLen) === floor($iLen) )
         {
             $this->iLength = $iLen;
         }
@@ -49,13 +59,18 @@ class Column
         }
     }
 
+    /**
+     * @param int|null $iPrec
+     * @returns void|int
+     * @throws \UnexpectedValueException
+     */
     public function Precision($iPrec = null)
     {
         if( is_null($iPrec) )
         {
             return $this->iPrecision;
         }
-        if( is_numeric($iPrec) && ceil($iPrec) === floor($iPrec) )
+        elseif( is_numeric($iPrec) && ceil($iPrec) === floor($iPrec) )
         {
             $this->iPrecision = $iPrec;
         }
@@ -65,24 +80,38 @@ class Column
         }
     }
 
+    /**
+     * @param null $mDef
+     * @return null
+     */
     public function DefaultValue($mDef = null)
     {
         if( is_null($mDef) )
         {
             return $this->mDefault;
         }
+        // TODO: validate value matches definition
         $this->mDefault = $mDef;
     }
 
+    /**
+     * @param null|bool $bVal
+     * @returns bool|void
+     * @throws \UnexpectedValueException
+     */
     public function IsNullable($bVal = null)
     {
         if( is_null($bVal) )
         {
             return $this->bNullable;
         }
-        if( is_bool($bVal) )
+        elseif( is_bool($bVal) )
         {
             $this->bNullable = $bVal;
+        }
+        else
+        {
+            throw new \UnexpectedValueException(__CLASS__ . '::' . __FUNCTION__ . ' expects no argument, or a boolean.');
         }
     }
 }
