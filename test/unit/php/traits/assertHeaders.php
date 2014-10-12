@@ -15,11 +15,11 @@ trait assertHeaders
         $aHeaders = [];
         foreach(xdebug_get_headers() as $strHeader)
         {
-            $aHeader = explode(':',$strHeader, 1);
+            $aHeader = explode(':',$strHeader);
             $aHeaders[$aHeader[0]] = $aHeader[1];
         }
 
         $this->assertArrayHasKey($strKey, $aHeaders);
-        $this->assertEquals($mValue, $aHeaders[$strKey]);
+        $this->assertContains($mValue, $aHeaders[$strKey]);
     }
 }
