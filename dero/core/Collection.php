@@ -1,6 +1,6 @@
 <?php
 
-namespace Dero\Data;
+namespace Dero\Core;
 
 
 class Collection implements \Iterator,

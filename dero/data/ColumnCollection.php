@@ -1,6 +1,7 @@
 <?php
 
 namespace Dero\Data;
+use Dero\Core\Collection;
 
 /**
  * Iterable container for multiple Columns
