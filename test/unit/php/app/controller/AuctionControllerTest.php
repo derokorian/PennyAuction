@@ -69,7 +69,7 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($mResult);
         $this->assertArrayHasKey('error', $mResult);
-        $this->assertHeaderStatus(200, 'Internal Server Error');
+        $this->assertHeaderStatus(500, 'Internal Server Error');
     }
 
     public function testAddAuctionsFailureNoAuction()
@@ -143,6 +143,6 @@ class AuctionControllerTest extends PHPUnit_Framework_TestCase
         $this->assertNotEmpty($mResult);
         $this->assertArrayHasKey('success', $mResult);
         $this->assertArrayHasKey('auction', $mResult);
-        $this->assertHeaderStatus(210, 'Created');
+        $this->assertHeaderStatus(201, 'Created');
     }
 }

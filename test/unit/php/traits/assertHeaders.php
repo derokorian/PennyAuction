@@ -5,9 +5,9 @@ namespace Test\Unit\Php\Traits;
 trait assertHeaders
 {
     // TODO: Figure out how to implement this
-    protected function assertHeaderStatus($iStatusCode, $mMessageContains = '')
+    protected function assertHeaderStatus($iStatusCode)
     {
-        return true;
+        $this->assertEquals($iStatusCode, http_response_code());
     }
 
     protected function assertHeaderSet($strKey, $mValue)
