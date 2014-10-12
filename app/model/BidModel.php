@@ -9,6 +9,7 @@
  */
 namespace App\Model;
 
+use Dero\Core\Retval;
 use Dero\Data\BaseModel;
 use Dero\Data\DataException;
 use Dero\Data\DataInterface;
@@ -106,6 +107,36 @@ class BidModel extends BaseModel
         if( !$oRet->HasFailure() )
         {
             $oBid->user_id = $oRet->Get();
+        }
+        return $oRet;
+    }
+
+    /**
+     * @param array $aOpts
+     * @return Retval
+     */
+    public function getBid($aOpts)
+    {
+        $oRet = new Retval();
+        $oParams = new ParameterCollection();
+        $strSql = 'SELECT b.bid_id, b.amount, b.created,
+                          a.auction_id, a.min_amount, a.adjusted_end_time,
+                          u.user_id, u.username
+                     FROM `bid` b
+                     JOIN `user` u USING(user_id)
+                     JOIN `auction` a USING(auction_id) '
+            . $this->GenerateCriteria($oParams, $aOpts, 'b.');
+        try
+        {
+            $oRet->Set(
+                $this->DB
+                    ->Prepare($strSql)
+                    ->BindParams($oParams)
+                    ->Execute()
+                    ->GetAll()
+            );
+        } catch (DataException $e) {
+            $oRet->AddError('Unable to query database', $e);
         }
         return $oRet;
     }
