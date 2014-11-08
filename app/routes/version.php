@@ -4,16 +4,16 @@
  * routes for install pages
  */
 $aRoutes[] = [
-    'pattern' => '#^install$#i',
-    'controller' => 'App\Controller\VersionController',
+    'pattern'      => '#^install$#i',
+    'controller'   => 'App\Controller\VersionController',
     'dependencies' => [],
-    'method' => 'install',
-    'args' => []
+    'method'       => 'install',
+    'args'         => []
 ];
 $aRoutes[] = [
-    'pattern' => '#^upgrade$#i',
-    'controller' => 'App\Controller\VersionController',
+    'pattern'      => '#^upgrade$#i',
+    'controller'   => 'App\Controller\VersionController',
     'dependencies' => [],
-    'method' => 'upgrade',
-    'args' => []
+    'method'       => 'upgrade',
+    'args'         => []
 ];

@@ -36,7 +36,7 @@ class UserModel extends BaseModel
             KEY_TYPE => KEY_TYPE_UNIQUE,
             'col_length' => 25,
             'required' => true,
-            'validation_pattern' => '/^[a-z0-9_-]+$/i'
+            'validation_pattern' => '/^[a-z0-9_-]{3,}$/i'
         ],
         'email' => [
             COL_TYPE => COL_TYPE_STRING,
@@ -88,6 +88,7 @@ class UserModel extends BaseModel
 
     /**
      * Constructor
+     * @param DataInterface|null $db
      */
     public function __construct($db = null)
     {

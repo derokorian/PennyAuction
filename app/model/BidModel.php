@@ -35,23 +35,20 @@ class BidModel extends BaseModel
             KEY_TYPE => KEY_TYPE_FOREIGN,
             'foreign_table' => 'user',
             'foreign_column' => 'user_id',
-            'required' => true,
-            'validation_pattern' => '/^[0-9]+$/'
+            'required' => true
         ],
         'auction_id' => [
             COL_TYPE => COL_TYPE_INTEGER,
             KEY_TYPE => KEY_TYPE_FOREIGN,
             'foreign_table' => 'auction',
             'foreign_column' => 'auction_id',
-            'required' => true,
-            'validation_pattern' => '/^[0-9]+$/'
+            'required' => true
         ],
         'amount' => [
             COL_TYPE => COL_TYPE_DECIMAL,
             'col_length' => 10,
             'scale' => 2,
             'required' => true,
-            'validation_pattern' => '/^[0-9.]+$/i'
         ],
         'created' => [
             COL_TYPE => COL_TYPE_DATETIME,

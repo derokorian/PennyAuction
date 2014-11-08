@@ -75,14 +75,18 @@ class UserController extends BaseController
                 $this->logout();
                 $aRet = ['error' => $oRet->GetError()];
             }
+            elseif( count($oRet->Get()) === 0 )
+            {
+                $aRet = ['error' => 'User not found'];
+            }
             else
             {
-                $aRet =['success' => true, 'user' => $oRet->Get()[0]];
+                $aRet = ['success' => true, 'user' => $oRet->Get()[0]];
             }
         }
         else
         {
-            $aRet =['success' => false];
+            $aRet = ['success' => false];
         }
         return $aRet;
     }
@@ -180,27 +184,13 @@ class UserController extends BaseController
         $oRet = $this->oUserModel->getUser($aOpts);
         if( !$oRet->HasFailure() )
         {
-            if( count($oRet->Get()) > 0 )
-            {
-                $aChars = array_map(function ($oChar) {
-                    $aChar = (array) $oChar;
-                    return $aChar;
-                }, $oRet->Get());
-                $c = count($aChars);
-                $aRet = [
-                    'success' => "Found $c users",
-                    'count' => $c,
-                    'users' => $aChars
-                ];
-            }
-            else
-            {
-                $aRet = [
-                    'success' => 'Found 0 users',
-                    'count' => 0,
-                    'users' => []
-                ];
-            }
+            $aUsers = $oRet->Get();
+            $c = count($aUsers);
+            $aRet = [
+                'success' => "Found $c users",
+                'count' => $c,
+                'users' => $c > 0 ? $aUsers : []
+            ];
         }
         else
         {

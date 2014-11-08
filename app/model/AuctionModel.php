@@ -35,23 +35,20 @@ class AuctionModel extends BaseModel
             KEY_TYPE => KEY_TYPE_FOREIGN,
             'foreign_table' => 'user',
             'foreign_column' => 'user_id',
-            'required' => true,
-            'validation_pattern' => '/^[0-9]+$/'
+            'required' => true
         ],
         'item_id' => [
             COL_TYPE => COL_TYPE_INTEGER,
             KEY_TYPE => KEY_TYPE_FOREIGN,
             'foreign_table' => 'item',
             'foreign_column' => 'item_id',
-            'required' => true,
-            'validation_pattern' => '/^[0-9]+$/'
+            'required' => true
         ],
         'min_amount' => [
             COL_TYPE => COL_TYPE_DECIMAL,
             'col_length' => 10,
             'scale' => 2,
             'required' => false,
-            'validation_pattern' => '/^[0-9.]+$/i'
         ],
         'original_end_time' => [
             COL_TYPE => COL_TYPE_DATETIME,
