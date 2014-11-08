@@ -9,23 +9,17 @@ use Dero\Core\Retval;
  */
 abstract class BaseModel
 {
-    /**
-     * @var DataInterface
-     */
+    /** @var DataInterface */
     protected $DB;
-    /**
-     * @var string
-     */
+
+    /** @var string */
     protected static $TABLE_NAME = '';
-    /**
-     * @var array
-     */
+
+    /** @var array */
     protected static $COLUMNS = [];
 
-    /**
-     * @const Used in queries that do a group concatenation
-     */
-    const CONCAT_SEPARATOR = '--|--';
+    /** @const Used in queries that do a group concatenation */
+    const CONCAT_SEPARATOR = 0x1D;
 
 
     /**
@@ -38,8 +32,10 @@ abstract class BaseModel
     }
 
     /**
+     * Validates given array of values against the table definition
      * @param array $aVars
      * @return Retval
+     * @throw RuntimeException
      */
     public function validate(Array $aVars)
     {
@@ -57,14 +53,53 @@ abstract class BaseModel
                 isset($aVars[$strCol]) &&
                 strlen($aVars[$strCol]) > $aCol['col_length'] )
             {
-                $oRetVal->AddError($strCol . ' is longer than max length (' . $aCol['col_length'] . ')');
+                $oRetVal->AddError($strCol . ' is longer than max length (' . $aCol['col_length'] . ').');
+            }
+
+            if( isset($aCol[COL_TYPE]) &&
+                isset($aVars[$strCol]) )
+            {
+                switch($aCol[COL_TYPE])
+                {
+                    case COL_TYPE_INTEGER:
+                        if( !is_numeric($aVars[$strCol]) ||
+                            (string)(int)$aVars[$strCol] !== (string)$aVars[$strCol] )
+                        {
+                            $oRetVal->AddError($strCol . ' must be a valid integer.');
+                        }
+                        break;
+                    case COL_TYPE_BOOLEAN:
+                        if( !is_bool($aVars) &&
+                            (string)(bool)$aVars[$strCol] !== (string)$aVars[$strCol] )
+                        {
+                            $oRetVal->AddError($strCol . ' must be a valid boolean.');
+                        }
+                        break;
+                    case COL_TYPE_DECIMAL:
+                        if( !is_numeric($aVars[$strCol]) ||
+                            !preg_match('/^[+\-]?(?:\d+(?:\.\d*)?|\.\d+)$/', trim($aVars[$strCol]) ) )
+                        {
+                            $oRetVal->AddError($strCol . ' must be a valid decimal.');
+                        }
+                        break;
+                    case COL_TYPE_FIXED_STRING:
+                        if( !isset($aCol['col_length']) || !is_int($aCol['col_length']) )
+                        {
+                            throw new \RuntimeException('COL_TYPE_FIXED_STRING found with no defined or invalid col_length!');
+                        }
+                        elseif( strlen($aVars[$strCol]) !== $aCol['col_length'] )
+                        {
+                            $oRetVal->AddError($strCol . ' must be fixed length (' . $aCol['col_length'] . ').');
+                        }
+                        break;
+                }
             }
 
             if( isset($aCol['validation_pattern']) &&
                 isset($aVars[$strCol]) &&
                 !preg_match($aCol['validation_pattern'],$aVars[$strCol]) )
             {
-                $oRetVal->AddError($strCol . ' did not validate');
+                $oRetVal->AddError($strCol . ' did not validate.');
             }
         }
         return $oRetVal;
@@ -98,17 +133,17 @@ abstract class BaseModel
         $strVals = '(';
         foreach( static::$COLUMNS as $name => $def)
         {
-            if( isset($aOpts[$name]) )
+            if( strtolower($name) == 'created' || strtolower($name) == 'modified' )
+            {
+                $strCols .= sprintf('`%s`,', $name);
+                $strVals .= 'NOW(),';
+            }
+            elseif( isset($aOpts[$name]) )
             {
                 $type = $this->getParamTypeFromColType($aOpts[$name], $def);
                 $oParams->Add(new Parameter($name, $aOpts[$name], $type));
                 $strCols .= sprintf('`%s`,', $name);
                 $strVals .= sprintf(':%s,', $name);
-            }
-            elseif( strtolower($name) == 'created' || strtolower($name) == 'modified' )
-            {
-                $strCols .= sprintf('`%s`,', $name);
-                $strVals .= 'NOW(),';
             }
         }
         return substr($strCols, 0, -1) . ') VALUES ' . substr($strVals, 0, -1) . ')';
@@ -125,6 +160,10 @@ abstract class BaseModel
             {
                 continue;
             }
+            elseif( strtolower($name) == 'modified' )
+            {
+                $strRet .= sprintf('`%s` = NOW(),', $name);
+            }
             elseif( isset($def[KEY_TYPE]) && $def[KEY_TYPE] === KEY_TYPE_PRIMARY )
             {
                 $strIdField = $name;
@@ -135,10 +174,6 @@ abstract class BaseModel
                 $type = $this->getParamTypeFromColType($aOpts[$name], $def);
                 $oParams->Add(new Parameter($name, $aOpts[$name], $type));
                 $strRet .= sprintf("`%s` = :%s,", $name, $name);
-            }
-            elseif( strtolower($name) == 'modified' )
-            {
-                $strRet .= sprintf('`%s` = NOW(),', $name);
             }
         }
         $strRet = substr($strRet, 0, -1) . ' ';
