@@ -39,21 +39,21 @@ abstract class BaseModel
      */
     public function validate(Array $aVars)
     {
-        $oRetVal = new Retval();
+        $oRetval = new Retval();
         foreach( static::$COLUMNS as $strCol => $aCol )
         {
             if( isset($aCol['required']) &&
                 $aCol['required'] === true &&
                 !isset($aVars[$strCol]) )
             {
-                $oRetVal->AddError($strCol . ' is required.');
+                $oRetval->AddError($strCol . ' is required.');
             }
 
             if( isset($aCol['col_length']) &&
                 isset($aVars[$strCol]) &&
                 strlen($aVars[$strCol]) > $aCol['col_length'] )
             {
-                $oRetVal->AddError($strCol . ' is longer than max length (' . $aCol['col_length'] . ').');
+                $oRetval->AddError($strCol . ' is longer than max length (' . $aCol['col_length'] . ').');
             }
 
             if( isset($aCol[COL_TYPE]) &&
@@ -65,21 +65,21 @@ abstract class BaseModel
                         if( !is_numeric($aVars[$strCol]) ||
                             (string)(int)$aVars[$strCol] !== (string)$aVars[$strCol] )
                         {
-                            $oRetVal->AddError($strCol . ' must be a valid integer.');
+                            $oRetval->AddError($strCol . ' must be a valid integer.');
                         }
                         break;
                     case COL_TYPE_BOOLEAN:
                         if( !is_bool($aVars) &&
                             (string)(bool)$aVars[$strCol] !== (string)$aVars[$strCol] )
                         {
-                            $oRetVal->AddError($strCol . ' must be a valid boolean.');
+                            $oRetval->AddError($strCol . ' must be a valid boolean.');
                         }
                         break;
                     case COL_TYPE_DECIMAL:
                         if( !is_numeric($aVars[$strCol]) ||
                             !preg_match('/^[+\-]?(?:\d+(?:\.\d*)?|\.\d+)$/', trim($aVars[$strCol]) ) )
                         {
-                            $oRetVal->AddError($strCol . ' must be a valid decimal.');
+                            $oRetval->AddError($strCol . ' must be a valid decimal.');
                         }
                         break;
                     case COL_TYPE_FIXED_STRING:
@@ -89,7 +89,7 @@ abstract class BaseModel
                         }
                         elseif( strlen($aVars[$strCol]) !== $aCol['col_length'] )
                         {
-                            $oRetVal->AddError($strCol . ' must be fixed length (' . $aCol['col_length'] . ').');
+                            $oRetval->AddError($strCol . ' must be fixed length (' . $aCol['col_length'] . ').');
                         }
                         break;
                 }
@@ -99,29 +99,29 @@ abstract class BaseModel
                 isset($aVars[$strCol]) &&
                 !preg_match($aCol['validation_pattern'],$aVars[$strCol]) )
             {
-                $oRetVal->AddError($strCol . ' did not validate.');
+                $oRetval->AddError($strCol . ' did not validate.');
             }
         }
-        return $oRetVal;
+        return $oRetval;
     }
 
     /**
      * Returns either WHERE or AND for sql
      * First call after resetting returns WHERE, the rest returns AND
-     * @param bool $reset True to return where on next call
+     * @param bool $bReset True to return where on next call
      * @return void|string
      */
-    private function where($reset = FALSE)
+    private function where($bReset = FALSE)
     {
-        static $Where;
-        if( $reset )
+        static $bWhere;
+        if( $bReset )
         {
-            $Where = FALSE;
+            $bWhere = FALSE;
             return null;
         }
-        if( $Where === FALSE )
+        if( $bWhere === FALSE )
         {
-            $Where = TRUE;
+            $bWhere = TRUE;
             return 'WHERE ';
         }
         return 'AND ';
@@ -339,7 +339,7 @@ abstract class BaseModel
                     else
                     {
                         throw new \UnexpectedValueException(
-                            'Bad column definition. COL_TYPE_STRING requires col_length be set.');
+                            'Bad column definition. COL_TYPE_FIXED_STRING requires col_length be set.');
                     }
                     break;
             }
@@ -415,14 +415,14 @@ abstract class BaseModel
      */
     public function CreateTable()
     {
-        $oRetVal = new Retval();
+        $oRetval = new Retval();
         $strSql = $this->GenerateCreateTable();
         try {
-            $oRetVal->Set($this->DB->Query($strSql));
+            $oRetval->Set($this->DB->Query($strSql));
         } catch (DataException $e) {
-            $oRetVal->AddError('Unable to query database', $e);
+            $oRetval->AddError('Unable to query database', $e);
         }
-        return $oRetVal;
+        return $oRetval;
     }
 
     /**
@@ -432,37 +432,37 @@ abstract class BaseModel
      */
     public function VerifyTableDefinition()
     {
-        $oRetVal = new Retval();
+        $oRetval = new Retval();
         $strSql = sprintf("SHOW TABLES LIKE '%s'", static::$TABLE_NAME);
         try {
-            $oRetVal->Set(
+            $oRetval->Set(
                 $this->DB
                     ->Query($strSql)
                     ->GetAll()
             );
         } catch (DataException $e) {
-            $oRetVal->AddError('Unable to query database', $e);
-            return $oRetVal;
+            $oRetval->AddError('Unable to query database', $e);
+            return $oRetval;
         }
-        if( count($oRetVal->Get()) == 0 )
+        if( count($oRetval->Get()) == 0 )
         {
-            $oRetVal = $this->CreateTable();
-            return $oRetVal;
+            $oRetval = $this->CreateTable();
+            return $oRetval;
         }
         $strSql = sprintf('DESCRIBE `%s`', static::$TABLE_NAME);
         try {
-            $oRetVal->Set(
+            $oRetval->Set(
                 $this->DB
                     ->Query($strSql)
                     ->GetAll()
             );
         } catch (DataException $e) {
-            $oRetVal->AddError('Unable to query database', $e);
-            return $oRetVal;
+            $oRetval->AddError('Unable to query database', $e);
+            return $oRetval;
         }
         $aRet = [];
         $strUpdate = 'ALTER TABLE `' . static::$TABLE_NAME . '` ';
-        $aTableCols = array_map(function($el) { return (array)$el; }, $oRetVal->Get());
+        $aTableCols = array_map(function($el) { return (array)$el; }, $oRetval->Get());
         $aTableCols = array_combine(
             array_column($aTableCols, 'Field'),
             array_values($aTableCols)
@@ -758,17 +758,17 @@ abstract class BaseModel
         {
             try
             {
-                $oRetVal->Set('Updating ' . static::$TABLE_NAME);
+                $oRetval->Set('Updating ' . static::$TABLE_NAME);
                 $this->DB->Query($strUpdate);
-                $oRetVal->Set(array_merge($aRet, ['message' => static::$TABLE_NAME . ' has been updated']));
+                $oRetval->Set(array_merge($aRet, ['message' => static::$TABLE_NAME . ' has been updated']));
             } catch (\Exception $e) {
-                $oRetVal->AddError('Error updating table ' . static::$TABLE_NAME, $e);
+                $oRetval->AddError('Error updating table ' . static::$TABLE_NAME, $e);
             }
         }
         else
         {
-            $oRetVal->Set(static::$TABLE_NAME . ' is up to date');
+            $oRetval->Set(static::$TABLE_NAME . ' is up to date');
         }
-        return $oRetVal;
+        return $oRetval;
     }
 }
